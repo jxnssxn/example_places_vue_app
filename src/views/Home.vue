@@ -3,7 +3,11 @@
 <template>
   <div class="home">
     <h1>{{ message }}</h1>
+    <h4>Enter a place</h4>
+    <p>name:<input type="text" v-model="name"></p>
+    <p>address:<input type="text" v-model="address"></p>
     <button v-on:click="createPlaces()">mention a new places</button>
+
     <div v-for="place in places">
       <p><h4>{{place.name}}</h4>
       <p><h4>{{place.address}}</h4>
@@ -24,6 +28,8 @@ export default {
       message: "Welcome to Vue.js!",
       message2: "**************",
       places: [],
+      name: "",
+      address: "",
     };
   },
   created: function () {
@@ -40,12 +46,12 @@ export default {
     createPlaces: function () {
       console.log("mention new place");
       var params = {
-        name: "forest",
-        address: "red tree lane",
+        name: this.name,
+        address: this.address,
       };
       axios.post("/api/places", params).then((response) => {
         console.log(response.data);
-        this.places = response.data;
+        this.places.push(response.data);
       });
     },
   },
